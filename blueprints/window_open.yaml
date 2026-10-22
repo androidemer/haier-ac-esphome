@@ -1,0 +1,60 @@
+blueprint:
+  name: Haier AC - Wyłącz gdy okno otwarte
+  description: Wyłącza klimatyzację gdy okno jest otwarte dłużej niż X minut.
+  domain: automation
+  input:
+    window_sensor:
+      name: Czujnik okna
+      selector:
+        entity:
+          domain: binary_sensor
+          device_class:
+            - window
+            - door
+    climate_entity:
+      name: Klimatyzacja
+      default: climate.klimatyzacja
+      selector:
+        entity:
+          domain: climate
+    delay_minutes:
+      name: Opóźnienie (minuty)
+      default: 2
+      selector:
+        number:
+          min: 0
+          max: 30
+          step: 1
+
+trigger:
+  - platform: state
+    entity_id: !input window_sensor
+    to: "on"
+    for:
+      minutes: !input delay_minutes
+    id: opened
+  - platform: state
+    entity_id: !input window_sensor
+    to: "off"
+    id: closed
+
+action:
+  - choose:
+      - conditions:
+          - condition: trigger
+            id: opened
+        sequence:
+          - service: climate.turn_off
+            target:
+              entity_id: !input climate_entity
+      - conditions:
+          - condition: trigger
+            id: closed
+        sequence:
+          - service: climate.set_hvac_mode
+            target:
+              entity_id: !input climate_entity
+            data:
+              hvac_mode: cool
+
+mode: restart
