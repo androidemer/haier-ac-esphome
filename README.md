@@ -6,15 +6,13 @@ Lokalna integracja klimatyzatorów Haier z Home Assistant, z pominięciem chmury
 
 | Model | Moduł WiFi | Protokół | Status |
 |-------|-----------|----------|--------|
-| Haier AS50TDDHRA-CL | KZW-W002 | hOn (UART 9600) | ✅ Działa |
-
-> Masz inny model? Daj znać w Issues — dodamy do listy!
+| Haier AS50TDDHRA-CL | KZW-W002 - zmieniony na ESP | hOn (UART 9600) | ✅ Działa |
 
 ## Czego potrzebujesz
 
 - **Home Assistant** z dodatkiem ESPHome
 - **ESP32-C3 Super Mini** (~15-25 zł na Allegro/AliExpress)
-- **3-4 kabelki** dupont żeńsko-żeńskie
+- odcięty kabelek z końcówką USB A
 - Lutownica (opcjonalnie, ale zalecane)
 
 ## Szybka instalacja
@@ -24,11 +22,10 @@ Lokalna integracja klimatyzatorów Haier z Home Assistant, z pominięciem chmury
 Zdejmij przedni panel klimatyzacji. Znajdź złącze USB-A (to UART, nie USB!).
 
 Klima USB-A ESP32-C3 Super Mini
-─────────── ───────────────────
-Pin 1 (5V) ──→ 5V (VIN)
-Pin 2 (TX) ──→ GPIO5
-Pin 3 (RX) ──→ GPIO4
-Pin 4 (GND) ──→ GND
+## Pin 1 (5V) - 5V (VIN)
+## Pin 2 (TX) - GPIO5
+## Pin 3 (RX) - GPIO4
+## Pin 4 (GND) - GND
 
 >  Nie montuj ESP32 w metalowej obudowie — blokuje WiFi!
 
@@ -59,19 +56,6 @@ Skopiuj zawartość z [`dashboard/haier-card.yaml`](dashboard/haier-card.yaml) d
 | RX ESP32 | GPIO5 |
 | Złącze klimy | USB-A (elektrycznie UART) |
 | Zasilanie | 5V z klimy → VIN ESP32 |
-
-## Struktura plików
-├── esphome/
-│ ├── haier-ac.yaml ← główny firmware ESP32
-│ └── secrets.yaml ← tajne hasła (nie udostępniaj!)
-├── dashboard/
-│ └── haier-card.yaml ← karta dashboardu
-├── blueprints/
-│ ├── auto_cooling.yaml ← auto-chłodzenie wg temperatury
-│ ├── window_open.yaml ← wyłącz gdy okno otwarte
-│ └── schedule.yaml ← harmonogram tygodniowy
-└── docs/
-└── wiring.md ← szczegółowy schemat podłączenia
 
 ## FAQ
 
