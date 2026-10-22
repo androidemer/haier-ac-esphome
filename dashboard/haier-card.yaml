@@ -1,0 +1,61 @@
+type: vertical-stack
+cards:
+  - type: thermostat
+    entity: climate.klimatyzacja
+    name: Klimatyzacja
+
+  - type: horizontal-stack
+    cards:
+      - type: button
+        name: Chłodzenie 22°C
+        icon: mdi:snowflake
+        tap_action:
+          action: call-service
+          service: climate.set_temperature
+          target:
+            entity_id: climate.klimatyzacja
+          data:
+            temperature: 22
+            hvac_mode: cool
+
+      - type: button
+        name: Grzanie 23°C
+        icon: mdi:fire
+        tap_action:
+          action: call-service
+          service: climate.set_temperature
+          target:
+            entity_id: climate.klimatyzacja
+          data:
+            temperature: 23
+            hvac_mode: heat
+
+      - type: button
+        name: Auto
+        icon: mdi:autorenew
+        tap_action:
+          action: call-service
+          service: climate.set_hvac_mode
+          target:
+            entity_id: climate.klimatyzacja
+          data:
+            hvac_mode: auto
+
+      - type: button
+        name: Wyłącz
+        icon: mdi:power
+        tap_action:
+          action: call-service
+          service: climate.turn_off
+          target:
+            entity_id: climate.klimatyzacja
+
+  - type: entities
+    title: Status
+    entities:
+      - entity: sensor.klimatyzacja_wifi_signal
+        name: Sygnał WiFi
+      - entity: sensor.klimatyzacja_uptime
+        name: Czas pracy
+      - entity: sensor.klimatyzacja_ip_address
+        name: Adres IP
